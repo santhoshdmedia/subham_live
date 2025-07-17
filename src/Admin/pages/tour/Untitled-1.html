@@ -1,0 +1,55 @@
+ <Card title="Tour List" className="bg-white p-6  shadow-2xl">
+              <div className="tour-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {tour.length > 0 ? (
+                  tour.map((item) => {
+                    const packageDetails = getPackageDetails(item.packages_details);
+
+                    return (
+                      <Ribbon text={packageDetails ? packageDetails.name : "Tour Package"} color="primary" placement="start" className="h-[30px] w-[100px] font-bold text-white text-center">
+                        <div className="p-[3px] rounded-lg shadow-lg border-2 border-black flex flex-col justify-between h-[450px]">
+                          <div className="w-full bg-white shadow space-y-3 relative overflow-hidden p-4 mr-2">
+                            {/* <div className="w-24 h-24 bg-violet-500 rounded-full absolute -right-5 -top-7">
+                              <p className="absolute top-11 left-2 text-white text-sm">{packageDetails ? packageDetails.name : "Tour Package"}</p>
+                            </div> */}
+
+                            <div className="w-full flex justify-center items-center">{packageDetails && packageDetails.image && <img src={packageDetails.image} alt={packageDetails.name} className="w-full h-48 object-cover" />}</div>
+
+                            <h1 className="font-bold text-xl text-center">{`Tour from ${moment(item.from_date).format("DD MMM YYYY")} to ${moment(item.to_date).format("DD MMM YYYY")}`}</h1>
+
+                            <p className="text-sm text-zinc-500 leading-6">
+                              <strong className="text-primary">Selected Packages:</strong> {packageDetails ? `${packageDetails.name} (${packageDetails.days}d/${packageDetails.nights}n)` : "Package details not available"}
+                            </p>
+                            <p className="text-sm text-zinc-500 leading-6">
+                              <strong className="text-primary">Selected Employees:</strong> {getEmployeeNames(item.employee_details)}
+                            </p>
+                          </div>
+
+                         {roles ==="super_admin" &&
+                         ( 
+                          <>
+                          <div className="flex justify-between items-center mt-4 px-4 mr-2 mb-5 gap-3">
+                            <button onClick={() => handleUpdate(item._id)} className="bg-secondary rounded-lg px-4 py-2 text-white  mr-2  w-[100px]">
+                              Update
+                            </button>
+                            <button onClick={() => handleDelete(item._id)} className="bg-primary rounded-lg px-4 py-2 text-white  w-[100px] ">
+                              Delete
+                            </button>
+                            <button onClick={()=>{
+                              navigate('/tour-details')
+                            }}  className="bg-gray-400 rounded-lg text-white py-2 px-4 w-[100px] "  > 
+                                
+                              View More
+                             
+                            </button>
+                          </div>
+                          </>
+                  )}
+                        </div>
+                      </Ribbon>
+                    );
+                  })
+                ) : (
+                  <p className="text-center text-gray-500">No tours found</p>
+                )}
+              </div>
+            </Card>

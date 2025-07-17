@@ -1,0 +1,119 @@
+/* place holeder with icons */
+@import url("./index.css");
+
+
+
+/* antd font * color  */
+.admin .ant-form-item .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before,
+.admin .ant-form-item .ant-form-item-explain-error {
+  color: var(--primary--color) !important;
+  font-family: var(--primary--font) !important;
+  font-weight: 500 !important;
+}
+
+/* dropdown */
+.admin .ant-dropdown-menu-title-content {
+  font-family: var(--primary--font) !important;
+}
+
+/* spin loding  */
+.ant-spin .ant-spin-dot-holder {
+  color: var(--primary--color) !important;
+}
+
+/* antd select border color */
+.admin .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  border: none !important;
+  font-family: var(--primary--font) !important;
+}
+
+/* antd table td font-family */
+.admin .ant-table-wrapper .ant-table.ant-table-small .ant-table-title,
+.ant-table-wrapper .ant-table.ant-table-small .ant-table-footer,
+.ant-table-wrapper .ant-table.ant-table-small .ant-table-cell,
+.ant-table-wrapper .ant-table.ant-table-small .ant-table-thead > tr > th,
+.ant-table-wrapper .ant-table.ant-table-small .ant-table-tbody > tr > th,
+.ant-table-wrapper .ant-table.ant-table-small .ant-table-tbody > tr > td,
+.ant-table-wrapper .ant-table.ant-table-small tfoot > tr > th,
+.ant-table-wrapper .ant-table.ant-table-small tfoot > tr > td {
+  font-family: var(--primary--font) !important;
+}
+
+.admin .ant-table-thead > tr > th {
+  background-color: var(--primary--color) !important;
+  font-weight: normal !important;
+  border-radius: 0px !important;
+  color: white !important;
+  height: 50px !important;
+}
+
+/* pagination */
+.admin .ant-table-wrapper .ant-table-pagination.ant-pagination {
+  background-color: white !important;
+  margin: 16px auto !important;
+  width: fit-content !important;
+  padding: 8px 20px !important;
+  border-radius: 50px !important;
+  font-family: var(--primary--font) !important;
+}
+
+.ant-pagination-item {
+  background: lightgray !important;
+  margin: 0px 4px !important;
+  border-radius: 50% !important;
+}
+
+.ant-pagination-item-active {
+  background: var(--primary--color) !important;
+  border-radius: 50% !important;
+}
+
+.ant-pagination-item-active a {
+  color: white !important;
+}
+
+.ant-table-tbody .tr {
+  background-color: aqua !important;
+}
+
+/* side menu */
+
+.admin .ant-menu-inline .ant-menu-item,
+.ant-menu-vertical .ant-menu-item,
+.ant-menu-inline .ant-menu-submenu-title,
+.ant-menu-vertical .ant-menu-submenu-title {
+  margin-block: 0px !important;
+}
+
+/* react quill  */
+.ql-container.ql-snow {
+  height: 425px !important;
+}
+
+.ant-btn-primary.ant-btn-solid {
+  background-color: var(--primary--color) !important;
+}
+
+/* .ant-btn-default.ant-btn-outlined{
+  background-color: var(--primary--color) !important;
+  margin-right: 0 !important;
+
+} */
+
+.custom_filter_form .ant-select-selector,
+.custom_filter_form .ant-select-selector:focus-within {
+  box-shadow: none !important;
+  border-color: white !important;
+}
+
+.custom_filter_form .antd_date_picker:focus-within {
+  border: transparent !important;
+  box-shadow: none !important;
+  /* background-color: gray !important; */
+}
+
+/* .custom_filter_form .ant-picker {
+  width: 300px !important;
+  height: 50px !important;
+  border: transparent !important;
+ } */
