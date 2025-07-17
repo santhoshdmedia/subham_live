@@ -178,6 +178,17 @@ const Vasan = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
+    
+       <div className=" md:block fixed top-[1.5rem] right-[-38px] lg:top-[3rem] lg:right-2 w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
+        {/* Profile container with glow effect */}
+        <div className="relative mt-12 mb-6 group">
+          <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
+          <div className="absolute w-[120px] h-[120px] lg:w-[190px] lg:h-[190px] rounded-full z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/10 group-hover:bg-white/20 transition-all duration-700"></div>
+          <div className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] mx-auto rounded-full influenser__profile overflow-hidden !z-10 relative border-4 border-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+            {/* Profile image would go here */}
+          </div>
+        </div>
+      </div>
       {/* Main Gallery Container */}
       <div
         ref={containerRef}
