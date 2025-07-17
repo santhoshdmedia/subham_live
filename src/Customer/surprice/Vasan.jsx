@@ -247,13 +247,13 @@ const Vasan = () => {
 
       {/* Package Navigation */}
       <div 
-        className="fixed bottom-0 left-0 right-0 z-[990] px-4"
+        className="fixed bottom-0 left-0 right-0 z-[990] px-1"
         onMouseEnter={() => setShowPackageNav(true)}
         // onMouseLeave={() => setShowPackageNav(false)}
       >
         <div className="relative">
           {/* Navigation Arrows */}
-          <div className={`flex justify-between absolute -top-[-80px] left-[-10px] right-0 transition-opacity duration-300 ${showPackageNav ? 'opacity-100' : 'opacity-0'} z-[999]`}>
+          <div className={`flex justify-between absolute -top-[-80px] left-[-0px] right-0 transition-opacity duration-300 ${showPackageNav ? 'opacity-100' : 'opacity-0'} z-[999]`}>
             <button
               onClick={() => scrollPackages('left')}
               disabled={!canScrollLeft}
