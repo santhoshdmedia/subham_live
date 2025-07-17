@@ -19,7 +19,7 @@ import AdminLayout from "../Admin/AdminLayout";
 import Package from "../Admin/pages/package/Package";
 import Settings from "../Admin/pages/settings/Settings";
 import HeroPage from "../Admin/pages/Hero/HeroPage";
-import Vasan from "../Customer/pages/Surprice/vasan";
+import Vasan from "../Customer/surprice/Vasan";
 import Register from "../Customer/pages/Surprice/Login/Register";
 import { LoginPage } from "../Customer/pages/Surprice/Login/Register";
 

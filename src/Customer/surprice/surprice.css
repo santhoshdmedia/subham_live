@@ -1,0 +1,11 @@
+/* .storey_one {
+  background: url("../../../assets/surprice/bg_1.webp") center center fixed;
+  background-size: cover;
+} */
+
+.influenser__profile{
+  background: url('../../assets/surprice/vasan.png') 65% 80%;
+  background-size: 126%;
+  /* background: #000; */
+}
+
