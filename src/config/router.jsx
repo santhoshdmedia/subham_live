@@ -19,7 +19,7 @@ import AdminLayout from "../Admin/AdminLayout";
 import Package from "../Admin/pages/package/Package";
 import Settings from "../Admin/pages/settings/Settings";
 import HeroPage from "../Admin/pages/Hero/HeroPage";
-import { ImageGallery } from "../Customer/pages/surprice/Surprice";
+import Surprice from "../Customer/pages/surprice/Surprice";
 import Register from "../Customer/pages/Surprice/Login/Register";
 import { LoginPage } from "../Customer/pages/Surprice/Login/Register";
 
@@ -93,7 +93,7 @@ let client_routes = [
   {
     path: "/Surprice",
     element: <CustomerLayout />,
-    children: [{ path: "/Surprice", element: <ImageGallery /> }],
+    children: [{ path: "/Surprice", element: <Surprice /> }],
   },
   {
     path: "/new-regiister",

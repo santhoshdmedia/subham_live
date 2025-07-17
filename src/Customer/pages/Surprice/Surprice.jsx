@@ -138,7 +138,7 @@ const instagraminfo = [
   },
 ];
 
-export const ImageGallery = () => {
+const Surprice = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -437,3 +437,5 @@ export const ImageGallery = () => {
     </div>
   );
 };
+
+export default Surprice
