@@ -2,7 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./navebar/Navbar";
 import Footer from "./footer/Footer";
 // import { ImageGallery } from "./pages/surprice/Surprice";
-import Surprice from "./pages/surprice/Surprice";
+import Surprice from "./pages/surprice/Surprice.jsx";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { useState } from "react";
 
