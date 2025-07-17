@@ -1,19 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./surprice.css";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
-// import img from "."
+import { motion, AnimatePresence } from "framer-motion";
 import image_1 from "../../assets/surprice/slides/image_1.jpg";
 import image_2 from "../../assets/surprice/slides/image_2.jpg";
 import image_3 from "../../assets/surprice/slides/image_3.jpg";
 import image_4 from "../../assets/surprice/slides/image_4.jpg";
 import image_5 from "../../assets/surprice/slides/image_5.jpg";
 import { FaInstagram } from "react-icons/fa6";
-import { Clock, Eye } from "lucide-react";
+import { Clock, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { GiPriceTag } from "react-icons/gi";
 import { MdMessage, MdOutlineFeaturedVideo } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -62,6 +56,7 @@ const images = [
       "Built in 15th century by Sanpaha Perumal (son of Kotte's king) after conquering Jaffna. Became a symbol of Hindu devotion and Jaffna's heritage.",
   },
 ];
+
 const travelPackages = [
   {
     name: "BATCH-1 (VAIBAVAM)",
@@ -121,243 +116,73 @@ const travelPackages = [
   },
 ];
 
-const instagraminfo = [
-  {
-    logo: Eye,
-    content: "Views",
-    count: "1M",
-  },
-  {
-    logo: MdOutlineFeaturedVideo,
-    content: "post",
-    count: "407",
-  },
-  {
-    logo: CgProfile,
-    content: "Followers",
-    count: "48.9K",
-  },
-];
-
 const Vasan = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
   const containerRef = useRef(null);
   const packagesContainerRef = useRef(null);
-  const animationTimeoutRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showPackageNav, setShowPackageNav] = useState(true);
 
-  // Handle smooth scroll to top when image changes
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
-  }, [activeIndex]);
-  useEffect(() => {
-    const container = packagesContainerRef.current;
-
-    const handleScroll = () => {
-      if (container) {
-        setCanScrollLeft(container.scrollLeft > 0);
-        setCanScrollRight(
-          container.scrollLeft < container.scrollWidth - container.clientWidth
-        );
-      }
-    };
-
-    container?.addEventListener("scroll", handleScroll);
-    return () => container?.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollPackages = (scrollOffset) => {
+  // Handle scroll position for package navigation
+  const handleScroll = () => {
     if (packagesContainerRef.current) {
-      packagesContainerRef.current.scrollLeft += scrollOffset;
+      const { scrollLeft, scrollWidth, clientWidth } = packagesContainerRef.current;
+      setScrollPosition(scrollLeft);
     }
   };
 
+  // Check if we can scroll left or right
+  const canScrollLeft = scrollPosition > 0;
+  const canScrollRight = () => {
+    if (!packagesContainerRef.current) return false;
+    const { scrollLeft, scrollWidth, clientWidth } = packagesContainerRef.current;
+    return scrollLeft < scrollWidth - clientWidth - 1;
+  };
+
+  // Scroll packages horizontally
+  const scrollPackages = (direction) => {
+    if (!packagesContainerRef.current) return;
+    
+    const container = packagesContainerRef.current;
+    const scrollAmount = container.clientWidth * 0.8;
+    
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
+  // Auto-hide package navigation after inactivity
+//   useEffect(() => {
+//     const timer = setTimeout(() => {
+//       setShowPackageNav(false);
+//     }, 3000);
+
+//     return () => clearTimeout(timer);
+//   }, [scrollPosition]);
+
+  // Handle wheel navigation for main images
   const handleWheel = (e) => {
     if (isAnimating) return;
-
     setIsAnimating(true);
 
     if (e.deltaY > 0) {
-      // Scroll down - next image
-      setActiveIndex((prev) => Math.min(prev + 1, images.length - 1));
+      setActiveIndex(prev => Math.min(prev + 1, images.length - 1));
     } else {
-      // Scroll up - previous image
-      setActiveIndex((prev) => Math.max(prev - 1, 0));
+      setActiveIndex(prev => Math.max(prev - 1, 0));
     }
 
-    // Reset animation lock after transition completes
-    clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => {
-      setIsAnimating(false);
-    }, 1000); // Match this with your animation duration
-  };
-
-  // Clean up timeout on unmount
-  useEffect(() => {
-    return () => {
-      clearTimeout(animationTimeoutRef.current);
-    };
-  }, []);
-
-  const handleClick = (id) => {
-    // Handle package click if needed
-    console.log("Package clicked:", id);
+    setTimeout(() => setIsAnimating(false), 1000);
   };
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Influencer Content Section - Hidden on mobile */}
-      <div className=" md:block fixed top-[1.5rem] right-[-38px] lg:top-[3rem] lg:right-2 w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
-        {/* Profile container with glow effect */}
-        <div className="relative mt-12 mb-6 group">
-          <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
-          <div className="absolute w-[120px] h-[120px] lg:w-[190px] lg:h-[190px] rounded-full z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/10 group-hover:bg-white/20 transition-all duration-700"></div>
-          <div className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] mx-auto rounded-full influenser__profile overflow-hidden !z-10 relative border-4 border-white shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-            {/* Profile image would go here */}
-          </div>
-        </div>
-      </div>
-
-      {/* Package info - Responsive layout */}
-      <div className="fixed bottom-0 left-0 lg:bottom-4 z-10 w-full px-5">
-        {/* Horizontal scroll for both mobile and desktop */}
-        <div className="w-full px-4 overflow-x-auto">
-          <div
-            ref={packagesContainerRef}
-            className="flex gap-6 w-max"
-            style={{
-              scrollSnapType: "x mandatory",
-              WebkitOverflowScrolling: "touch",
-              paddingBottom: "10px",
-            }}
-          >
-            {travelPackages.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => handleClick(index)}
-                className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] gap-6 relative cursor-pointer bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 group "
-                style={{
-                  scrollSnapAlign: "start",
-                }}
-              >
-                {/* Flex row layout */}
-                <div className="flex flex-row h-full">
-                  {/* Image on left */}
-                  <div className="w-[60%]  rounded-l-2xl overflow-hidden relative">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    {item.duration && (
-                      <div className="absolute bottom-0 right-0 flex items-center bg-white py-1 px-2 rounded-none font-semibold text-gray-500 text-sm gap-1 w-full">
-                        <Clock size={14} />
-                        <span className="text-xs md:text-sm">
-                          {item.duration}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content on right */}
-                  <div className="w-[100%] p-4 flex flex-col justify-between">
-                    <div className="space-y-2">
-                      <div>
-                        <h2 className="text-md md:text-lg font-semibold text-gray-800 line-clamp-1">
-                          {item.name}
-                        </h2>
-                      </div>
-
-                      {item.message_description && (
-                        <div className="flex flex-row items-start text-gray-600 text-xs md:text-sm font-semibold gap-1">
-                          <div className="mt-1">
-                            <MdMessage size={14} className="mt-0.5" />
-                          </div>
-                          <span className="line-clamp-2">
-                            {item.message_description}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-2">
-                        <GiPriceTag size={16} className="text-primary" />
-                        <div className="flex items-center gap-1 text-primary text-md md:text-lg font-bold">
-                          <div className="h-4 w-auto overflow-hidden shadow-sm">
-                            <img
-                              src="https://cdn.britannica.com/13/4413-050-98188B5C/Flag-Sri-Lanka.jpg"
-                              alt="country-flag"
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <span>I {item.discount_price}</span>
-                        </div>
-                        <div className="text-xs line-through text-gray-400 font-medium">
-                          I {item.original_price}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* View Button */}
-                    <Link to={item.route} className="mt-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleClick(index);
-                        }}
-                        className="w-full py-2 text-xs md:text-sm font-semibold bg-primary text-white rounded-lg shadow hover:bg-primary/90 transition flex items-center justify-center gap-2"
-                      >
-                        <Eye size={16} /> View Details
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Discount Badge */}
-                {item.original_price > item.discount_price && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-semibold shadow">
-                    {Math.round(
-                      ((item.original_price - item.discount_price) /
-                        item.original_price) *
-                        100
-                    )}
-                    % OFF
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Dots */}
-      <div className="fixed right-4  lg:right-8 top-[16rem] lg:top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setActiveIndex(index);
-            }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === activeIndex ? "bg-white scale-125" : "bg-white/30"
-            }`}
-            disabled={isAnimating}
-          />
-        ))}
-      </div>
-
       {/* Main Gallery Container */}
       <div
         ref={containerRef}
         onWheel={handleWheel}
         className="h-full w-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
-        style={{ scrollBehavior: "smooth" }}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -365,65 +190,38 @@ const Vasan = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1 }}
             className="h-screen w-full relative snap-start"
           >
-            {/* Background Image with parallax effect */}
-            <motion.div
-              className="absolute inset-0 overflow-hidden"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-            >
+            {/* Background Image */}
+            <motion.div className="absolute inset-0 overflow-hidden">
               <motion.img
                 src={images[activeIndex].src}
-                alt={images[activeIndex].name}
-                className="w-full h-full object-cover object-center"
-                initial={{ opacity: 0.8 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
+                alt=""
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1.5 }}
               />
-              <div className="absolute inset-0 bg-black/30" />
+              <div className="absolute inset-0 bg-black/40" />
             </motion.div>
 
-            {/* Content Overlay */}
-            <div className="absolute lg:top-[15rem] top-[8rem] lg:left-[10rem] flex items-center justify-center px-4 md:px-8">
+            {/* Content */}
+            <div className="absolute top-[8rem] lg:top-[15rem] left-0 right-0 px-4 md:px-8 lg:left-[10rem]">
               <motion.div
-                className="max-w-4xl w-full "
+                className="max-w-4xl"
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
               >
-                <motion.h2
-                  className="text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left mb-4 md:mb-6 text-[#f5f5f5] drop-shadow"
-                  initial={{
-                    letterSpacing: "0.5em",
-                    opacity: 0,
-                    scale: 0.9,
-                  }}
-                  animate={{
-                    letterSpacing: "0.05em",
-                    opacity: 1,
-                    scale: 1,
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    ease: "easeOut",
-                  }}
-                >
+                <motion.h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
                   {images[activeIndex].title}
                 </motion.h2>
-
-                <motion.div
-                  className="text-white/90 text-base md:text-lg lg:text-xl"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                >
+                <motion.div className="text-white/90 text-base md:text-lg lg:text-xl">
                   {Array.isArray(images[activeIndex].description) ? (
                     <ul className="space-y-2 list-disc pl-5">
-                      {images[activeIndex].description.map((item, index) => (
-                        <li key={index}>{item}</li>
+                      {images[activeIndex].description.map((item, i) => (
+                        <li key={i}>{item}</li>
                       ))}
                     </ul>
                   ) : (
@@ -435,8 +233,107 @@ const Vasan = () => {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Package Navigation */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 z-[990] px-4"
+        onMouseEnter={() => setShowPackageNav(true)}
+        // onMouseLeave={() => setShowPackageNav(false)}
+      >
+        <div className="relative">
+          {/* Navigation Arrows */}
+          <div className={`flex justify-between absolute -top-[-80px] left-[-10px] right-0 transition-opacity duration-300 ${showPackageNav ? 'opacity-100' : 'opacity-0'} z-[999]`}>
+            <button
+              onClick={() => scrollPackages('left')}
+              disabled={!canScrollLeft}
+              className={`p-2 rounded-full bg-white shadow-lg hover:bg-white transition ${
+                !canScrollLeft ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              <ChevronLeft className="h-5 w-5 text-gray-800" />
+            </button>
+            <button
+              onClick={() => scrollPackages('right')}
+              disabled={!canScrollRight()}
+              className={`p-2 rounded-full bg-white shadow-lg hover:bg-white transition ${
+                !canScrollRight() ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              <ChevronRight className="h-5 w-5 text-gray-800" />
+            </button>
+          </div>
+
+          {/* Packages Carousel */}
+          <div
+            ref={packagesContainerRef}
+            onScroll={handleScroll}
+            className="flex gap-6 overflow-x-auto scroll-smooth pb-4 packages-container"
+          >
+            {travelPackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] bg-white rounded-2xl shadow-md overflow-hidden"
+              >
+                <div className="flex flex-col md:flex-row h-full">
+                  <div className="w-full md:w-1/2 h-48 md:h-auto relative">
+                    <img
+                      src={pkg.image}
+                      alt={pkg.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+                      <div className="flex items-center text-white text-sm">
+                        <Clock className="mr-1" size={14} />
+                        <span>{pkg.duration}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 p-4 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{pkg.name}</h3>
+                      <div className="flex items-center mt-2 text-sm text-gray-600">
+                        <MdMessage className="mr-1" size={14} />
+                        <span>{pkg.message_description}</span>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <div className="flex items-center gap-2">
+                        <GiPriceTag className="text-primary" size={16} />
+                        <span className="text-primary font-bold">
+                          I {pkg.discount_price}
+                        </span>
+                        <span className="text-xs line-through text-gray-400">
+                          I {pkg.original_price}
+                        </span>
+                      </div>
+                      <Link to={pkg.route} className="block mt-3">
+                        <button className="w-full py-2 bg-primary text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1">
+                          <Eye size={16} /> View Details
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Image Navigation Dots */}
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-10 flex flex-col space-y-3">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              i === activeIndex ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/50'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Vasan
+export default Vasan;

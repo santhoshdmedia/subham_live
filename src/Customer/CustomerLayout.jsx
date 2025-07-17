@@ -17,13 +17,13 @@ const CustomerLayout = () => {
     <div>
       <div className={`sticky top-0 !z-50`}>
 
-      <Navbar />
+      {/* <Navbar /> */}
       </div>
       <ParallaxProvider>
         {isSurpriceRoute ? <Vasan /> : <Outlet />}
       </ParallaxProvider>
       {/* Hide footer for surprise route */}
-      {!isSurpriceRoute && <Footer />}
+      {/* {!isSurpriceRoute && <Footer />} */}
     </div>
   );
 };
