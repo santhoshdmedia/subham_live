@@ -138,7 +138,7 @@ const instagraminfo = [
   },
 ];
 
-const Surprice = () => {
+const Vasan = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -438,4 +438,4 @@ const Surprice = () => {
   );
 };
 
-export default Surprice
+export default Vasan

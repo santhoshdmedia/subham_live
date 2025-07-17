@@ -19,9 +19,9 @@ import AdminLayout from "../Admin/AdminLayout";
 import Package from "../Admin/pages/package/Package";
 import Settings from "../Admin/pages/settings/Settings";
 import HeroPage from "../Admin/pages/Hero/HeroPage";
-import Surprice from "../Customer/pages/surprice/Surprice.jsx";
-import Register from "../Customer/pages/Surprice/Login/Register.jsx";
-import { LoginPage } from "../Customer/pages/Surprice/Login/Register.jsx";
+import Vasan from "../Customer/pages/Surprice/vasan";
+import Register from "../Customer/pages/Surprice/Login/Register";
+import { LoginPage } from "../Customer/pages/Surprice/Login/Register";
 
 // landing page
 let client_routes = [
@@ -93,7 +93,7 @@ let client_routes = [
   {
     path: "/Surprice",
     element: <CustomerLayout />,
-    children: [{ path: "/Surprice", element: <Surprice /> }],
+    children: [{ path: "/Surprice", element: <Vasan /> }],
   },
   {
     path: "/new-regiister",
