@@ -12,6 +12,13 @@ import { GiPriceTag } from "react-icons/gi";
 import { MdMessage, MdOutlineFeaturedVideo } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+// import Swiper from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import vasan_1 from "../../assets/surprice/vasan/vasan_1.webp";
+import vasan_2 from "../../assets/surprice/vasan/vasan_2.webp";
+import vasan_3 from "../../assets/surprice/vasan/vasan_3.webp";
+const vasan=[vasan_1,vasan_2,vasan_3]
 
 const images = [
   {
@@ -22,16 +29,8 @@ const images = [
   },
   {
     src: image_2,
-    title: "Key Events and Rituals",
-    description: [
-      "Manjam: Divine procession",
-      "Thirukkarthikai: Night of lamps",
-      "Kailasavahanam: Mountain journey",
-      "Velvimanam: Spear procession",
-      "Peacock feather worship",
-      "Silver chariot procession",
-      "Ther Thiruvila: Grand chariot festival with devotees pulling together",
-    ],
+    title: "Vasan Visualz",
+    description: "a lifestyle creator from Trichy, Tamil Nadu known for his food, fashion, and travel content, has now collaborated with Sail Subham to launch a budget-friendly India-to-Sri Lanka tour package. Drawing from his travel experience, he’s crafted an affordable and scenic itinerary for those eager to explore Sri Lanka.",
   },
   {
     src: image_3,
@@ -123,6 +122,7 @@ const Vasan = () => {
   const packagesContainerRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showPackageNav, setShowPackageNav] = useState(true);
+  const [influencer,setInfluencer]=useState(false)
 
   // Handle scroll position for package navigation
   const handleScroll = () => {
@@ -163,23 +163,33 @@ const Vasan = () => {
 //   }, [scrollPosition]);
 
   // Handle wheel navigation for main images
-  const handleWheel = (e) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
+const handleWheel = (e) => {
+  if (isAnimating) return;
+  setIsAnimating(true);
 
-    if (e.deltaY > 0) {
-      setActiveIndex(prev => Math.min(prev + 1, images.length - 1));
-    } else {
-      setActiveIndex(prev => Math.max(prev - 1, 0));
-    }
+  let newIndex;
+  if (e.deltaY > 0) {
+    newIndex = Math.min(activeIndex + 1, images.length - 1);
+  } else {
+    newIndex = Math.max(activeIndex - 1, 0);
+  }
 
-    setTimeout(() => setIsAnimating(false), 1000);
-  };
+  setActiveIndex(newIndex);
+  
+  // Set influencer to true only when landing on the 2nd image (index 1)
+  setInfluencer(newIndex === 1);
+  
+  setTimeout(() => setIsAnimating(false), 1000);
+};
+const handleSetActive = (index) => {
+  setActiveIndex(index);
+setInfluencer(index === 1); // true only when index is 1 (second item)
+};
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
     
-       <div className=" md:block fixed top-[1.5rem] right-[-38px] lg:top-[3rem] lg:right-2 w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
+       <div className=" md:block fixed top-[1.5rem] right-[2rem] md:right-[8rem] lg:top-[0rem] lg:right-[10rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
         {/* Profile container with glow effect */}
         <div className="relative mt-12 mb-6 group">
           <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
@@ -189,6 +199,30 @@ const Vasan = () => {
           </div>
         </div>
       </div>
+     {influencer? (<div className="absolute lg:top-[250px] top-[320px]  right-12 lg:right-[120px] z-[99] lg:w-[250px] w-[300px] h-[140px] lg:h-[300px] rounded-2xl overflow-hidden bg-slate-50">
+        <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        
+        modules={[Autoplay, Pagination, Navigation]}
+        className="h-full"
+      >
+    {
+      vasan.map((img)=>(
+        <>
+        <SwiperSlide key={img.id} className="h-full w-full relative">
+          <img src={img} alt="" />
+        </SwiperSlide>
+        </>
+      ))
+    }
+    <h1 className="absolute bottom-2 z-10 text-2xl text-[#f5f5f5] font-bold translate-x-1/2">vasan visualz</h1>
+      </Swiper>
+      </div>):(<></>)}
       {/* Main Gallery Container */}
       <div
         ref={containerRef}
@@ -218,7 +252,7 @@ const Vasan = () => {
             </motion.div>
 
             {/* Content */}
-            <div className="absolute top-[8rem] lg:top-[15rem] left-0 right-0 px-4 md:px-8 lg:left-[10rem]">
+            <div className="absolute top-[8rem] lg:top-[15rem] left-0 right-0 px-4 md:px-8 lg:left-[8rem]">
               <motion.div
                 className="max-w-4xl"
                 initial={{ y: 50, opacity: 0 }}
@@ -285,8 +319,8 @@ const Vasan = () => {
                 key={pkg.id}
                 className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] bg-white rounded-2xl shadow-md overflow-hidden"
               >
-                <div className="flex flex-col md:flex-row h-full">
-                  <div className="w-full md:w-1/2 h-48 md:h-auto relative">
+                <div className="flex   h-full">
+                  <div className="w-full md:w-1/2 h-46  lg:h-48 md:h-auto relative">
                     <img
                       src={pkg.image}
                       alt={pkg.name}
@@ -299,25 +333,25 @@ const Vasan = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full md:w-1/2 p-4 flex flex-col justify-between">
+                  <div className="w-full md:w-1/2 p-4 flex flex-col gap-0 justify-between">
                     <div>
                       <h3 className="font-semibold text-gray-800">{pkg.name}</h3>
-                      <div className="flex items-center mt-2 text-sm text-gray-600">
-                        <MdMessage className="mr-1" size={14} />
+                      <div className="flex items-center  text-sm text-gray-600">
+                        <MdMessage className="mr-1" size={20} />
                         <span>{pkg.message_description}</span>
                       </div>
                     </div>
-                    <div className="mt-4">
+                    <div className="">
                       <div className="flex items-center gap-2">
                         <GiPriceTag className="text-primary" size={16} />
-                        <span className="text-primary font-bold">
-                          I {pkg.discount_price}
+                        <span className="text-primary font-bold text-sm">
+                          INR{pkg.discount_price}
                         </span>
                         <span className="text-xs line-through text-gray-400">
-                          I {pkg.original_price}
+                          {pkg.original_price}
                         </span>
                       </div>
-                      <Link to={pkg.route} className="block mt-3">
+                      <Link to={pkg.route} className="block mt-2">
                         <button className="w-full py-2 bg-primary text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1">
                           <Eye size={16} /> View Details
                         </button>
@@ -336,7 +370,7 @@ const Vasan = () => {
         {images.map((_, i) => (
           <button
             key={i}
-            onClick={() => setActiveIndex(i)}
+            onClick={() => handleSetActive(i)}
             className={`w-3 h-3 rounded-full transition-all ${
               i === activeIndex ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/50'
             }`}
