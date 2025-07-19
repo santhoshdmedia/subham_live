@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import { CaretRightOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Mail from "../mail/Mail";
+import { useNavigate } from "react-router-dom";
 
 const { useToken } = theme;
 
@@ -23,6 +24,7 @@ const Vaibhamvam = () => {
   const [loading, setLoading] = useState(false);
   const { token } = useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
+   const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -43,6 +45,12 @@ const Vaibhamvam = () => {
       setDestination(result[0]);
     }
   }, [location]);
+   useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+      navigate('/new-register'); // Redirect to login if no token found
+    }
+  }, [navigate]);
 
   useEffect(() => {
     // console.log(id);
@@ -51,7 +59,7 @@ const Vaibhamvam = () => {
       try {
         setLoading(true);
         const result = await axios.get(
-          `https://subham-backend-2.onrender.com/api/auth/package/${id}`
+          `http://localhost:5058/api/auth/package/${id}`
         );
         const datas = _.get(result, "data.data", {});
 

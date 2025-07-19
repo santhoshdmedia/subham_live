@@ -128,7 +128,7 @@ const Vasan = () => {
   const [travelPackages,setTravelPackages]=useState([])
    const fetchPackages = async () => {
       try {
-        const response = await axios.get('https://subham-backend-2.onrender.com/api/auth/package');
+        const response = await axios.get('http://localhost:5058/api/auth/package');
         setTravelPackages(response.data.data); // Assuming response.data contains your packages
         console.log(response.data.data);
         

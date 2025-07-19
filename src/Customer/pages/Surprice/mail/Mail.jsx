@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./mail.css";
+import { useNavigate } from "react-router-dom";
 
 const Mail = (packageName) => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const Mail = (packageName) => {
     message: "",
     package: packageName.packageName || "",
   });
-  console.log(packageName);
+  const navigate = useNavigate();
   
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,6 +27,7 @@ const Mail = (packageName) => {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
+ 
 
   const validate = () => {
     const newErrors = {};
@@ -52,7 +54,7 @@ const Mail = (packageName) => {
 
     try {
       const response = await axios.post(
-        "https://subham-backend-2.onrender.com/api/auth/send-inquiry",
+        "http://localhost:5058/api/auth/send-inquiry",
         formData
       );
       setSubmitStatus({

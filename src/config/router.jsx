@@ -94,9 +94,9 @@ let client_routes = [
     children: [{ path: "/client-tour", element: <ClientTour /> }],
   },
   {
-    path: "/Surprice",
+    path: "/influencer-page",
     element: <CustomerLayout />,
-    children: [{ path: "/Surprice", element: <Vasan /> }],
+    children: [{ path: "/influencer-page", element: <Vasan /> }],
   },
   {
     path: "/new-register",

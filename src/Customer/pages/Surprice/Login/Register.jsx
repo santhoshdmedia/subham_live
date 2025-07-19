@@ -159,7 +159,7 @@ const Register = () => {
       }
 
       const response = await axios.post(
-        "https://subham-backend-2.onrender.com/api/auth/send-mail-otp ",
+        "http://localhost:5058/api/auth/send-mail-otp ",
         {
           phone: form.phone,
           email: form.email,
@@ -186,7 +186,7 @@ const Register = () => {
       const otpValue = form.otp.join("");
       
       const response = await axios.post(
-        "https://subham-backend-2.onrender.com/api/auth/verify-mail-otp",
+        "http://localhost:5058/api/auth/verify-mail-otp",
         {
           name: form.name,
           email: form.email,
@@ -533,17 +533,17 @@ export const LoginPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://subham-backend-2.onrender.com/api/auth/login', {
+      const response = await axios.post('http://localhost:5058/api/auth/login', {
         email: formData.email,
         password: formData.password
       });
 
       if (response.data.success) {
         // Store user data or token as needed
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('token', JSON.stringify(response.data.token));
         
         // Redirect to dashboard or home page
-        // navigate('/dashboard');
+        navigate('/influencer-page');
         toast.success("login successful")
       } else {
         setError(response.data.error || 'Login failed');

@@ -292,8 +292,8 @@ export const SurpriceNav=()=>{
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem(adminToken);
-    setIsLoggedIn(!!token);
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(true);
 
     const handleScroll = () => {
       setAfter(window.scrollY > 2);
@@ -393,10 +393,14 @@ export const SurpriceNav=()=>{
     navigate(`${res.path}`);
     setOpen(false);
   };
+  const handleLogOut=()=>{
+    localStorage.removeItem('token')
+    setIsLoggedIn(false)
+  }
 
   return (
     <div className="h-[60px] w-screen text-sm bg-[#ffffff85] center_div justify-between  px-5 md:px-10 lg:px-20 fixed">
-      <Link to="/Surprice" className="lg:w-[31%] flex justify-start items-start">
+      <Link to="/influencer-page" className="lg:w-[31%] flex justify-start items-start">
         <img src={IMAGE_HELPER.SubhamLogo} alt="logo" className="w-[100px] md:w-[140px]" />
       </Link>
 
@@ -417,8 +421,16 @@ export const SurpriceNav=()=>{
       </Drawer>
 
       <div className="lg:w-[31%] flex items-center justify-end gap-5">
+         {isLoggedIn?
+         <>
+         <button className="bg-primary text-white rounded px-3 py-1"
+         onClick={handleLogOut}
+         >
+          Logout
+         </button>
+         </>: <>
         <div>
-          <Link to={"/new-login"} className="bg-primary text-white rounded px-3 py-1">
+         <Link to={"/new-login"} className="bg-primary text-white rounded px-3 py-1">
             Login
           </Link>
         </div>
@@ -427,6 +439,7 @@ export const SurpriceNav=()=>{
             Sign Up
           </Link>
         </div>
+          </>}
         {/* {isLoggedIn ? (
           <div className="hidden lg:flex items-center gap-2">
             <Button
