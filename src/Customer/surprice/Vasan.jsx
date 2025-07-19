@@ -18,6 +18,8 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import vasan_1 from "../../assets/surprice/vasan/vasan_1.webp";
 import vasan_2 from "../../assets/surprice/vasan/vasan_2.webp";
 import vasan_3 from "../../assets/surprice/vasan/vasan_3.webp";
+import { result } from "lodash";
+import axios from "axios";
 const vasan=[vasan_1,vasan_2,vasan_3]
 
 const images = [
@@ -30,7 +32,7 @@ const images = [
   {
     src: image_2,
     title: "Vasan Visualz",
-    description: "a lifestyle creator from Trichy, Tamil Nadu known for his food, fashion, and travel content, has now collaborated with Sail Subham to launch a budget-friendly India-to-Sri Lanka tour package. Drawing from his travel experience, he’s crafted an affordable and scenic itinerary for those eager to explore Sri Lanka.",
+    description: "a lifestyle creator from Trichy, Tamil Nadu known for his food, fashion, and travel content, has now collaborated with Sail Subham to launch a budget-friendly India-to-Sri Lanka tour package.he’s crafted an affordable and scenic itinerary for those eager to explore Sri Lanka.",
   },
   {
     src: image_3,
@@ -56,64 +58,64 @@ const images = [
   },
 ];
 
-const travelPackages = [
-  {
-    name: "BATCH-1 (VAIBAVAM)",
-    image: "https://msmwebfiles.s3.amazonaws.com/1752068189731.jpg",
-    original_price: 28000,
-    discount_price: 22500,
-    message_description: "28 July – 31 July (Devotional Yatra) ",
-    duration: "3 Nights / 4 Days",
-    location: "Jaffna",
-    contact: "+91 9087143535",
-    description:
-      "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
-    route:
-      "https://sailsubham.com/destination-explore/686e676356765efca613ddca",
-  },
-  {
-    name: "BATCH-2 (VAIBAVAM)",
-    image: "https://msmwebfiles.s3.amazonaws.com/1752210445320.jpg",
-    original_price: 30000,
-    discount_price: 25000,
-    message_description: "15 Aug – 18 Aug (Devotional Yatra) ",
-    duration: "3 Nights / 4 Days",
-    location: "Jaffna",
-    contact: "+91 9087143535",
-    description:
-      "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
-    route:
-      "https://sailsubham.com/destination-explore/686e72af56765efca6141ad6",
-  },
-  {
-    name: "BATCH-3 (VAIBAVAM)",
-    image: "https://msmwebfiles.s3.amazonaws.com/1752215724835.jpg",
-    original_price: 28000,
-    discount_price: 22500,
-    message_description: "18 Aug – 21 Aug (Devotional Yatra) ",
-    duration: "3 Nights / 4 Days",
-    location: "Jaffna",
-    contact: "+91 9087143535",
-    description:
-      "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
-    route:
-      "https://sailsubham.com/destination-explore/686f580956765efca6161a4d",
-  },
-  {
-    name: "BATCH-4 (VAIBAVAM)",
-    image: "https://msmwebfiles.s3.amazonaws.com/1752215696955.jpg",
-    original_price: 28000,
-    discount_price: 22500,
-    message_description: "22 Aug – 25 Aug (Devotional Yatra) ",
-    duration: "3 Nights / 4 Days",
-    location: "Jaffna",
-    contact: "+91 9087143535",
-    description:
-      "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
-    route:
-      "https://sailsubham.com/destination-explore/686f6b8156765efca61692a5",
-  },
-];
+// const travelPackages = [
+//   {
+//     name: "BATCH-1 (VAIBAVAM)",
+//     image: "https://msmwebfiles.s3.amazonaws.com/1752068189731.jpg",
+//     original_price: 28000,
+//     discount_price: 22500,
+//     message_description: "28 July – 31 July (Devotional Yatra) ",
+//     duration: "3 Nights / 4 Days",
+//     location: "Jaffna",
+//     contact: "+91 9087143535",
+//     description:
+//       "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
+//     route:
+//       "https://sailsubham.com/destination-explore/686e676356765efca613ddca",
+//   },
+//   {
+//     name: "BATCH-2 (VAIBAVAM)",
+//     image: "https://msmwebfiles.s3.amazonaws.com/1752210445320.jpg",
+//     original_price: 30000,
+//     discount_price: 25000,
+//     message_description: "15 Aug – 18 Aug (Devotional Yatra) ",
+//     duration: "3 Nights / 4 Days",
+//     location: "Jaffna",
+//     contact: "+91 9087143535",
+//     description:
+//       "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
+//     route:
+//       "https://sailsubham.com/destination-explore/686e72af56765efca6141ad6",
+//   },
+//   {
+//     name: "BATCH-3 (VAIBAVAM)",
+//     image: "https://msmwebfiles.s3.amazonaws.com/1752215724835.jpg",
+//     original_price: 28000,
+//     discount_price: 22500,
+//     message_description: "18 Aug – 21 Aug (Devotional Yatra) ",
+//     duration: "3 Nights / 4 Days",
+//     location: "Jaffna",
+//     contact: "+91 9087143535",
+//     description:
+//       "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
+//     route:
+//       "https://sailsubham.com/destination-explore/686f580956765efca6161a4d",
+//   },
+//   {
+//     name: "BATCH-4 (VAIBAVAM)",
+//     image: "https://msmwebfiles.s3.amazonaws.com/1752215696955.jpg",
+//     original_price: 28000,
+//     discount_price: 22500,
+//     message_description: "22 Aug – 25 Aug (Devotional Yatra) ",
+//     duration: "3 Nights / 4 Days",
+//     location: "Jaffna",
+//     contact: "+91 9087143535",
+//     description:
+//       "Nallur Kandhaswamy Temple, located in Jaffna, Sri Lanka, is one of the most revered Hindu temples dedicated to Lord Murugan (Skanda), the god of war and wisdom...",
+//     route:
+//       "https://sailsubham.com/destination-explore/686f6b8156765efca61692a5",
+//   },
+// ];
 
 const Vasan = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -122,7 +124,23 @@ const Vasan = () => {
   const packagesContainerRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showPackageNav, setShowPackageNav] = useState(true);
-  const [influencer,setInfluencer]=useState(false)
+  const [influencer,setInfluencer]=useState(false);
+  const [travelPackages,setTravelPackages]=useState([])
+   const fetchPackages = async () => {
+      try {
+        const response = await axios.get('https://subham-backend-2.onrender.com/api/auth/package');
+        setTravelPackages(response.data.data); // Assuming response.data contains your packages
+        console.log(response.data.data);
+        
+      } catch (err) {
+        console.error('Error fetching packages:', err);
+      }
+    };
+
+  useEffect(()=>{
+    fetchPackages()
+    
+  },[])
 
   // Handle scroll position for package navigation
   const handleScroll = () => {
@@ -189,7 +207,7 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
     
-       <div className=" md:block fixed top-[1.5rem] right-[2rem] md:right-[8rem] lg:top-[0rem] lg:right-[10rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
+       <div className=" md:block fixed top-[1.5rem] right-[-2rem] md:right-[8rem] lg:top-[2.2rem] lg:right-[8rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
         {/* Profile container with glow effect */}
         <div className="relative mt-12 mb-6 group">
           <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
@@ -314,7 +332,8 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
             onScroll={handleScroll}
             className="flex gap-6 overflow-x-auto scroll-smooth pb-4 packages-container"
           >
-            {travelPackages.map((pkg) => (
+            {travelPackages
+            .map((pkg) => (
               <div
                 key={pkg.id}
                 className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] bg-white rounded-2xl shadow-md overflow-hidden"
@@ -351,7 +370,7 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
                           {pkg.original_price}
                         </span>
                       </div>
-                      <Link to={pkg.route} className="block mt-2">
+                      <Link to={`/vaibhavam/${pkg._id}`} className="block mt-2">
                         <button className="w-full py-2 bg-primary text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1">
                           <Eye size={16} /> View Details
                         </button>

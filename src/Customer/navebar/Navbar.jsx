@@ -266,3 +266,197 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+export const SurpriceNav=()=>{
+  const [after, setAfter] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setuser] = useState("");
+  const navigate = useNavigate();
+  const [active, setActive] = useState("");
+
+  const fetchData = async () => {
+    try {
+      const result = await checkLoginStatus();
+      const userData = _.get(result, "data.data", []);
+      console.log(userData);
+      setuser(userData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem(adminToken);
+    setIsLoggedIn(!!token);
+
+    const handleScroll = () => {
+      setAfter(window.scrollY > 2);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const NavbarLinks = [
+    { id: 1, name: "Home", path: "/" },
+    { id: 2, name: "About Us", path: "/aboutus" },
+    {
+      id: 3,
+      name: "Tours",
+      validPaths: ["/destination", "/destination-india"],
+      children: [
+        {
+          id: 1,
+          name: "Top Destination In Sri Lanka",
+          path: "/destination",
+        },
+        {
+          id: 2,
+          name: "Top Destination In India",
+          path: "/destination-india",
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "Policy",
+      validPaths: ["/privacypolicy", "/travelpolicy", "/termsandconditions"],
+      children: [
+        {
+          id: 1,
+          name: "Privacy Policy",
+          path: "/privacypolicy",
+        },
+        {
+          id: 2,
+          name: "Travel Policy",
+          path: "/travelpolicy",
+        },
+        {
+          id: 3,
+          name: "Terms and Conditions",
+          path: "/termsandconditions",
+        },
+      ],
+    },
+    { id: 4, name: "Contacts", path: "/contact" },
+  ];
+
+  const new_path = (validPaths, path) => {
+    if (!validPaths || !path) return false;
+
+    return validPaths.includes(path);
+  };
+
+  const navigation = useNavigate();
+
+  const handleCLick = (res) => {
+    if (res?.same) {
+      setActive(res?.path);
+    } else {
+      navigation(res?.path);
+    }
+  };
+
+  const DisplayCustomDropDown = ({ items, gap = false, mobile_view }) => {
+    return (
+      <Menu mode={mobile_view ? "inline" : "horizontal"} className={`${mobile_view ? "!w-full" : ""}`}>
+        {NavbarLinks?.map((menuItem, menuIndex) => {
+          if (!_.isEmpty(menuItem?.children)) {
+            return (
+              <Menu.SubMenu key={menuItem.name} title={<h1 className={`${new_path(menuItem.validPaths, location.pathname) ? "!text-primary" : "!text-black"}`}>{menuItem.name}</h1>} className={`${location.pathname === menuItem.path || new_path(menuItem.validPaths, location.pathname) ? "!text-primary" : "!text-black"}`}>
+                {menuItem.children?.map((childItem, childIndex) => (
+                  <Menu.Item key={`${menuItem.name}-${childIndex}`} onClick={() => handleChange(childItem)} className={`!h-[50px] ${location.pathname === childItem.path || new_path(childItem.validPaths, location.pathname) ? "!text-primary" : "!text-black"}`}>
+                    {childItem.name}
+                  </Menu.Item>
+                ))}
+              </Menu.SubMenu>
+            );
+          }
+
+          return (
+            <Menu.Item key={menuItem.name || menuIndex} onClick={() => handleChange(menuItem)} className={`!h-[50px] ${location.pathname === menuItem.path || new_path(menuItem.validPaths, location.pathname) ? "!text-primary" : "!text-black"}`}>
+              {menuItem.name}
+            </Menu.Item>
+          );
+        })}
+      </Menu>
+    );
+  };
+
+  const handleChange = (res) => {
+    navigate(`${res.path}`);
+    setOpen(false);
+  };
+
+  return (
+    <div className="h-[60px] w-screen text-sm bg-[#ffffff85] center_div justify-between  px-5 md:px-10 lg:px-20 fixed">
+      <Link to="/Surprice" className="lg:w-[31%] flex justify-start items-start">
+        <img src={IMAGE_HELPER.SubhamLogo} alt="logo" className="w-[100px] md:w-[140px]" />
+      </Link>
+
+      <div className="hidden lg:w-[38%] lg:block">
+        <div className="flex items-center !w-full justify-center">
+          {/* <DisplayCustomDropDown items={NavbarLinks} /> */}
+        </div>
+      </div>
+
+      
+      <Drawer
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+      >
+        {/* <DisplayCustomDropDown items={NavbarLinks} mobile_view={true} /> */}
+      </Drawer>
+
+      <div className="lg:w-[31%] flex items-center justify-end gap-5">
+        <div>
+          <Link to={"/new-login"} className="bg-primary text-white rounded px-3 py-1">
+            Login
+          </Link>
+        </div>
+        <div className="hidden xl:block">
+          <Link to={"/new-register"} className="bg-primary text-white rounded px-3 py-1">
+            Sign Up
+          </Link>
+        </div>
+        {/* {isLoggedIn ? (
+          <div className="hidden lg:flex items-center gap-2">
+            <Button
+              type="default"
+              onClick={() => {
+                localStorage.removeItem(adminToken);
+                setIsLoggedIn(false);
+                setuser(null);
+                navigate("/admin-packages");
+              }}
+              className="bg-primary text-white "
+            >
+              Admin Live
+            </Button>
+          </div>
+        ) : (
+          <div className="hidden lg:block">
+            <Link to={"/agent-login"} className="bg-primary text-white rounded px-3 py-1">
+              Admin Login
+            </Link>
+          </div>
+        )} */}
+        <div
+          className="block lg:hidden cursor-pointer"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <ICON_HELPER.HAMBURGER_MENU_ICON />
+        </div>
+      </div>
+    </div>)
+}

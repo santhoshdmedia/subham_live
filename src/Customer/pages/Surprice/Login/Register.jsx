@@ -5,6 +5,8 @@ import { ToastContainer,toast } from "react-toastify";
 import { motion } from 'framer-motion';
 import {  Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import "./register.css"
 
 const Register = () => {
   // Form state
@@ -157,7 +159,7 @@ const Register = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5058/api/auth/send-otp",
+        "https://subham-backend-2.onrender.com/api/auth/send-mail-otp ",
         {
           phone: form.phone,
           email: form.email,
@@ -184,7 +186,7 @@ const Register = () => {
       const otpValue = form.otp.join("");
       
       const response = await axios.post(
-        "http://localhost:5058/api/auth/verify-otp",
+        "https://subham-backend-2.onrender.com/api/auth/verify-mail-otp",
         {
           name: form.name,
           email: form.email,
@@ -233,8 +235,8 @@ const Register = () => {
 
   return (
     <div
-      className="min-h-[90vh] flex items-center justify-center"
-      style={{ backgroundColor: colors.background }}
+      className="min-h-[100vh] flex items-center justify-center register_page"
+      // style={{ backgroundColor: colors.background }}
     >
       <div className="w-full max-w-md mx-4">
         {/* Card Header */}
@@ -487,13 +489,13 @@ const Register = () => {
           <div className="mt-6 text-center">
             <p className="text-sm" style={{ color: colors.text }}>
               Already have an account?{" "}
-              <a
-                href="#"
+              <Link
+                to={"/new-login"}
                 className="font-medium hover:underline"
                 style={{ color: colors.primary }}
               >
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </div>
@@ -531,7 +533,7 @@ export const LoginPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5058/api/auth/login', {
+      const response = await axios.post('https://subham-backend-2.onrender.com/api/auth/login', {
         email: formData.email,
         password: formData.password
       });
@@ -554,7 +556,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex items-center justify-center p-4 login_page">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -699,12 +701,12 @@ export const LoginPage = () => {
             >
               <p className="text-sm text-gray-600">
                 Don't have an account?{' '}
-                <a 
-                  href="/register" 
+                <Link 
+                  to={"/new-register"} 
                   className="text-orange-600 font-medium hover:underline"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </motion.div>
           </div>

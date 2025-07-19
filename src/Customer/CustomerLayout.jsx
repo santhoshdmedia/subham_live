@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "./navebar/Navbar";
+import Navbar,{SurpriceNav} from "./navebar/Navbar";
 import Footer from "./footer/Footer";
 // import { ImageGallery } from "./pages/surprice/Surprice";
 import Vasan from "./surprice/Vasan";
@@ -11,19 +11,27 @@ const CustomerLayout = () => {
   const [showFooter, setShowFooter] = useState(true);
   
   // Check if current route is 'surprice'
-  const isSurpriceRoute = location.pathname.includes("Surprice");
+  const isSurpriceRoute = ["Surprice", "Enquirey","new-register", "new-login","vaibhavam"].some(route => 
+    location.pathname.includes(route)
+  );
+ const isSpecialRoute = ["new-register", "new-login",].some(route => 
+    location.pathname.includes(route)
+  );
 
   return (
     <div>
-      <div className={`sticky top-0 !z-50`}>
+      <div className={`sticky top-0 !z-50 ${isSpecialRoute?"hidden":""}`}>
 
-      {/* <Navbar /> */}
+      
+        {isSurpriceRoute ? <SurpriceNav /> : <Navbar />}
+
       </div>
       <ParallaxProvider>
-        {isSurpriceRoute ? <Vasan /> : <Outlet />}
+        { <Outlet />}
       </ParallaxProvider>
       {/* Hide footer for surprise route */}
-      {/* {!isSurpriceRoute && <Footer />} */}
+      <div className={`${isSpecialRoute?"hidden":""}`}></div>
+      {!isSurpriceRoute && <Footer />}
     </div>
   );
 };

@@ -22,6 +22,9 @@ import HeroPage from "../Admin/pages/Hero/HeroPage";
 import Vasan from "../Customer/surprice/Vasan";
 import Register from "../Customer/pages/Surprice/Login/Register";
 import { LoginPage } from "../Customer/pages/Surprice/Login/Register";
+import Mail from "../Customer/pages/Surprice/mail/Mail";
+import Enquiry from "../Customer/pages/Surprice/enquirey/Enquirey";
+import Vaibhamvam from "../Customer/pages/Surprice/destination/Vaibhamvam";
 
 // landing page
 let client_routes = [
@@ -96,14 +99,29 @@ let client_routes = [
     children: [{ path: "/Surprice", element: <Vasan /> }],
   },
   {
-    path: "/new-regiister",
+    path: "/new-register",
     element: <CustomerLayout />,
-    children: [{ path: "/new-regiister", element: <Register /> }],
+    children: [{ path: "/new-register", element: <Register /> }],
   },
   {
     path: "/new-login",
     element: <CustomerLayout />,
     children: [{ path: "/new-login", element: <LoginPage /> }],
+  },
+  {
+    path: "/Enquirey",
+    element: <CustomerLayout />,
+    children: [{ path: "/Enquirey", element: <Mail /> }],
+  },
+  {
+    path: "/Enquirey-view",
+    element: <CustomerLayout />,
+    children: [{ path: "/Enquirey-view", element: <Enquiry /> }],
+  },
+  {
+    path: "/vaibhavam/:id",
+    element: <CustomerLayout />,
+    children: [{ path: "/vaibhavam/:id", element: <Vaibhamvam /> }],
   },
 ];
 
