@@ -174,7 +174,7 @@ const Vasan = () => {
     if (!packagesContainerRef.current) return;
 
     const container = packagesContainerRef.current;
-    const scrollAmount = container.clientWidth * 0.8;
+    const scrollAmount = container.clientWidth * 1.05;
 
     container.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -210,10 +210,13 @@ const Vasan = () => {
 
     setTimeout(() => setIsAnimating(false), 1000);
   };
-  const handleSetActive = (index) => {
-    setActiveIndex(index);
-    setInfluencer(index === 1); // true only when index is 1 (second item)
-  };
+const handleSetActive = (index) => {
+  if (isAnimating) return; // Prevent rapid changes during animation
+  setIsAnimating(true);
+  setActiveIndex(index);
+  setInfluencer(index === 1);
+  setTimeout(() => setIsAnimating(false), 1000); // Match animation duration
+};
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
@@ -352,7 +355,7 @@ const Vasan = () => {
             {travelPackages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] bg-white rounded-2xl shadow-md overflow-hidden"
+                className="flex-shrink-0 w-[calc(100vw-1rem)] md:w-[40rem] bg-white rounded-2xl shadow-md overflow-hidden"
               >
                 <div className="flex   h-full">
                   <div className="w-full md:w-1/2 h-46  lg:h-48 md:h-auto relative">
@@ -403,20 +406,22 @@ const Vasan = () => {
       </div>
 
       {/* Image Navigation Dots */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-10 flex flex-col space-y-3">
-        {images.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => handleSetActive(i)}
-          onTouchEnd={() => handleSetActive(i)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              i === activeIndex
-                ? "bg-white scale-125"
-                : "bg-white/30 hover:bg-white/50"
-            }`}
-          />
-        ))}
-      </div>
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-10 flex flex-col space-y-3 md:space-y-4">
+  {images.map((_, i) => (
+    <button
+      key={i}
+      onClick={() => handleSetActive(i)}
+      onTouchStart={() => handleSetActive(i)} // Add touch event
+      className={`w-4 h-4 md:w-3 md:h-3 rounded-full transition-all ${
+        i === activeIndex
+          ? "bg-white scale-125 md:scale-110"
+          : "bg-white/30 hover:bg-white/50"
+      }`}
+      aria-label={`Go to slide ${i + 1}`}
+      style={{ touchAction: 'manipulation' }} // Improve touch responsiveness
+    />
+  ))}
+</div>
     </div>
   );
 };
