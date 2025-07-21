@@ -159,7 +159,7 @@ const Register = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5058/api/auth/send-mail-otp ",
+        "https://subham-backend-2.onrender.com/api/auth/send-mail-otp ",
         {
           phone: form.phone,
           email: form.email,
@@ -533,7 +533,7 @@ export const LoginPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5058/api/auth/login', {
+      const response = await axios.post('https://subham-backend-2.onrender.com/api/auth/login', {
         email: formData.email,
         password: formData.password
       });

@@ -13,14 +13,16 @@ import { MdMessage, MdOutlineFeaturedVideo } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 // import Swiper from "swiper";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import vasan_1 from "../../assets/surprice/vasan/vasan_1.webp";
 import vasan_2 from "../../assets/surprice/vasan/vasan_2.webp";
 import vasan_3 from "../../assets/surprice/vasan/vasan_3.webp";
 import { result } from "lodash";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
-const vasan=[vasan_1,vasan_2,vasan_3]
+const vasan = [vasan_1, vasan_2, vasan_3];
 
 const images = [
   {
@@ -32,7 +34,8 @@ const images = [
   {
     src: image_2,
     title: "Vasan Visualz",
-    description: "a lifestyle creator from Trichy, Tamil Nadu known for his food, fashion, and travel content, has now collaborated with Sail Subham to launch a budget-friendly India-to-Sri Lanka tour package.he’s crafted an affordable and scenic itinerary for those eager to explore Sri Lanka.",
+    description:
+      "a lifestyle creator from Trichy, Tamil Nadu known for his food, fashion, and travel content, has now collaborated with Sail Subham to launch a budget-friendly India-to-Sri Lanka tour package.he’s crafted an affordable and scenic itinerary for those eager to explore Sri Lanka.",
   },
   {
     src: image_3,
@@ -124,28 +127,35 @@ const Vasan = () => {
   const packagesContainerRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showPackageNav, setShowPackageNav] = useState(true);
-  const [influencer,setInfluencer]=useState(false);
-  const [travelPackages,setTravelPackages]=useState([])
-   const fetchPackages = async () => {
-      try {
-        const response = await axios.get('http://localhost:5058/api/auth/package');
-        setTravelPackages(response.data.data); // Assuming response.data contains your packages
-        console.log(response.data.data);
-        
-      } catch (err) {
-        console.error('Error fetching packages:', err);
-      }
-    };
+  const [influencer, setInfluencer] = useState(false);
+  const [travelPackages, setTravelPackages] = useState([]);
+  const fetchPackages = async () => {
+    try {
+      const response = await axios.get(
+        "https://subham-backend-2.onrender.com/api/auth/package"
+      );
+      setTravelPackages(response.data.data); // Assuming response.data contains your packages
+      console.log(response.data.data);
+    } catch (err) {
+      console.error("Error fetching packages:", err);
+    }
+  };
 
-  useEffect(()=>{
-    fetchPackages()
-    
-  },[])
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/new-register"); // Redirect to login if no token found
+    }
+    fetchPackages();
+  }, []);
 
   // Handle scroll position for package navigation
   const handleScroll = () => {
     if (packagesContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = packagesContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } =
+        packagesContainerRef.current;
       setScrollPosition(scrollLeft);
     }
   };
@@ -154,60 +164,60 @@ const Vasan = () => {
   const canScrollLeft = scrollPosition > 0;
   const canScrollRight = () => {
     if (!packagesContainerRef.current) return false;
-    const { scrollLeft, scrollWidth, clientWidth } = packagesContainerRef.current;
+    const { scrollLeft, scrollWidth, clientWidth } =
+      packagesContainerRef.current;
     return scrollLeft < scrollWidth - clientWidth - 1;
   };
 
   // Scroll packages horizontally
   const scrollPackages = (direction) => {
     if (!packagesContainerRef.current) return;
-    
+
     const container = packagesContainerRef.current;
     const scrollAmount = container.clientWidth * 0.8;
-    
+
     container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
     });
   };
 
   // Auto-hide package navigation after inactivity
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       setShowPackageNav(false);
-//     }, 3000);
+  //   useEffect(() => {
+  //     const timer = setTimeout(() => {
+  //       setShowPackageNav(false);
+  //     }, 3000);
 
-//     return () => clearTimeout(timer);
-//   }, [scrollPosition]);
+  //     return () => clearTimeout(timer);
+  //   }, [scrollPosition]);
 
   // Handle wheel navigation for main images
-const handleWheel = (e) => {
-  if (isAnimating) return;
-  setIsAnimating(true);
+  const handleWheel = (e) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
 
-  let newIndex;
-  if (e.deltaY > 0) {
-    newIndex = Math.min(activeIndex + 1, images.length - 1);
-  } else {
-    newIndex = Math.max(activeIndex - 1, 0);
-  }
+    let newIndex;
+    if (e.deltaY > 0) {
+      newIndex = Math.min(activeIndex + 1, images.length - 1);
+    } else {
+      newIndex = Math.max(activeIndex - 1, 0);
+    }
 
-  setActiveIndex(newIndex);
-  
-  // Set influencer to true only when landing on the 2nd image (index 1)
-  setInfluencer(newIndex === 1);
-  
-  setTimeout(() => setIsAnimating(false), 1000);
-};
-const handleSetActive = (index) => {
-  setActiveIndex(index);
-setInfluencer(index === 1); // true only when index is 1 (second item)
-};
+    setActiveIndex(newIndex);
+
+    // Set influencer to true only when landing on the 2nd image (index 1)
+    setInfluencer(newIndex === 1);
+
+    setTimeout(() => setIsAnimating(false), 1000);
+  };
+  const handleSetActive = (index) => {
+    setActiveIndex(index);
+    setInfluencer(index === 1); // true only when index is 1 (second item)
+  };
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
-    
-       <div className=" md:block fixed top-[1.5rem] right-[-2rem] md:right-[8rem] lg:top-[2.2rem] lg:right-[8rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
+      <div className=" md:block fixed top-[1.5rem] right-[-2rem] md:right-[8rem] lg:top-[2.2rem] lg:right-[8rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
         {/* Profile container with glow effect */}
         <div className="relative mt-12 mb-6 group">
           <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
@@ -217,30 +227,33 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
           </div>
         </div>
       </div>
-     {influencer? (<div className="absolute lg:top-[250px] top-[320px]  right-12 lg:right-[120px] z-[99] lg:w-[250px] w-[300px] h-[140px] lg:h-[300px] rounded-2xl overflow-hidden bg-slate-50">
-        <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        
-        modules={[Autoplay, Pagination, Navigation]}
-        className="h-full"
-      >
-    {
-      vasan.map((img)=>(
-        <>
-        <SwiperSlide key={img.id} className="h-full w-full relative">
-          <img src={img} alt="" />
-        </SwiperSlide>
-        </>
-      ))
-    }
-    <h1 className="absolute bottom-2 z-10 text-2xl text-[#f5f5f5] font-bold translate-x-1/2">vasan visualz</h1>
-      </Swiper>
-      </div>):(<></>)}
+      {influencer ? (
+        <div className="absolute lg:top-[250px] top-[320px]  right-12 lg:right-[120px] z-[99] lg:w-[250px] w-[300px] h-[140px] lg:h-[300px] rounded-2xl overflow-hidden bg-slate-50">
+          <Swiper
+            spaceBetween={30}
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="h-full"
+          >
+            {vasan.map((img) => (
+              <>
+                <SwiperSlide key={img.id} className="h-full w-full relative">
+                  <img src={img} alt="" />
+                </SwiperSlide>
+              </>
+            ))}
+            <h1 className="absolute bottom-2 z-10 text-2xl text-[#f5f5f5] font-bold translate-x-1/2">
+              vasan visualz
+            </h1>
+          </Swiper>
+        </div>
+      ) : (
+        <></>
+      )}
       {/* Main Gallery Container */}
       <div
         ref={containerRef}
@@ -298,28 +311,32 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
       </div>
 
       {/* Package Navigation */}
-      <div 
+      <div
         className="fixed bottom-0 left-0 right-0 z-[990] px-1"
         onMouseEnter={() => setShowPackageNav(true)}
         // onMouseLeave={() => setShowPackageNav(false)}
       >
         <div className="relative">
           {/* Navigation Arrows */}
-          <div className={`flex justify-between absolute -top-[-80px] left-[-0px] right-0 transition-opacity duration-300 ${showPackageNav ? 'opacity-100' : 'opacity-0'} z-[999]`}>
+          <div
+            className={`flex justify-between absolute -top-[-80px] left-[-0px] right-0 transition-opacity duration-300 ${
+              showPackageNav ? "opacity-100" : "opacity-0"
+            } z-[999]`}
+          >
             <button
-              onClick={() => scrollPackages('left')}
+              onClick={() => scrollPackages("left")}
               disabled={!canScrollLeft}
               className={`p-2 rounded-full bg-white shadow-lg hover:bg-white transition ${
-                !canScrollLeft ? 'opacity-50 cursor-not-allowed' : ''
+                !canScrollLeft ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               <ChevronLeft className="h-5 w-5 text-gray-800" />
             </button>
             <button
-              onClick={() => scrollPackages('right')}
+              onClick={() => scrollPackages("right")}
               disabled={!canScrollRight()}
               className={`p-2 rounded-full bg-white shadow-lg hover:bg-white transition ${
-                !canScrollRight() ? 'opacity-50 cursor-not-allowed' : ''
+                !canScrollRight() ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               <ChevronRight className="h-5 w-5 text-gray-800" />
@@ -332,8 +349,7 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
             onScroll={handleScroll}
             className="flex gap-6 overflow-x-auto scroll-smooth pb-4 packages-container"
           >
-            {travelPackages
-            .map((pkg) => (
+            {travelPackages.map((pkg) => (
               <div
                 key={pkg.id}
                 className="flex-shrink-0 w-[calc(100vw-5rem)] md:w-[32rem] bg-white rounded-2xl shadow-md overflow-hidden"
@@ -354,7 +370,9 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
                   </div>
                   <div className="w-full md:w-1/2 p-4 flex flex-col gap-0 justify-between">
                     <div>
-                      <h3 className="font-semibold text-gray-800">{pkg.name}</h3>
+                      <h3 className="font-semibold text-gray-800">
+                        {pkg.name}
+                      </h3>
                       <div className="flex items-center  text-sm text-gray-600">
                         <MdMessage className="mr-1" size={20} />
                         <span>{pkg.message_description}</span>
@@ -390,8 +408,11 @@ setInfluencer(index === 1); // true only when index is 1 (second item)
           <button
             key={i}
             onClick={() => handleSetActive(i)}
+          onTouchEnd={() => handleSetActive(i)}
             className={`w-3 h-3 rounded-full transition-all ${
-              i === activeIndex ? 'bg-white scale-125' : 'bg-white/30 hover:bg-white/50'
+              i === activeIndex
+                ? "bg-white scale-125"
+                : "bg-white/30 hover:bg-white/50"
             }`}
           />
         ))}

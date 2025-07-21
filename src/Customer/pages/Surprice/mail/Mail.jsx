@@ -54,7 +54,7 @@ const Mail = (packageName) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5058/api/auth/send-inquiry",
+        "https://subham-backend-2.onrender.com/api/auth/send-inquiry",
         formData
       );
       setSubmitStatus({

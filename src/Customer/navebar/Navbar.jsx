@@ -396,6 +396,7 @@ export const SurpriceNav=()=>{
   const handleLogOut=()=>{
     localStorage.removeItem('token')
     setIsLoggedIn(false)
+    window.location.reload();
   }
 
   return (
@@ -463,7 +464,7 @@ export const SurpriceNav=()=>{
           </div>
         )} */}
         <div
-          className="block lg:hidden cursor-pointer"
+          className="hidden cursor-pointer"
           onClick={() => {
             setOpen(true);
           }}

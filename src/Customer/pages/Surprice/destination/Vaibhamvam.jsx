@@ -24,7 +24,7 @@ const Vaibhamvam = () => {
   const [loading, setLoading] = useState(false);
   const { token } = useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -45,10 +45,11 @@ const Vaibhamvam = () => {
       setDestination(result[0]);
     }
   }, [location]);
-   useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  useEffect(() => {
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
-      navigate('/new-register'); // Redirect to login if no token found
+      navigate("/new-register"); // Redirect to login if no token found
     }
   }, [navigate]);
 
@@ -59,7 +60,7 @@ const Vaibhamvam = () => {
       try {
         setLoading(true);
         const result = await axios.get(
-          `http://localhost:5058/api/auth/package/${id}`
+          `https://subham-backend-2.onrender.com/api/auth/package/${id}`
         );
         const datas = _.get(result, "data.data", {});
 
@@ -182,23 +183,25 @@ const Vaibhamvam = () => {
                     </div>
                   </div>
                   {isModalOpen && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="flex justify-between items-center border-b p-4">
-            <h3 className="text-lg font-semibold">Book Your Package</h3>
-            <button 
-              onClick={handleCancel}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <ICON_HELPER.CLOSE_ICON />
-            </button>
-          </div>
-          <div className="p-4">
-            <Mail packageName={destination.name} />
-          </div>
-        </div>
-      </div>
-    )}
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center border-b p-4">
+                          <h3 className="text-lg font-semibold">
+                            Book Your Package
+                          </h3>
+                          <button
+                            onClick={handleCancel}
+                            className="text-gray-500 hover:text-gray-700"
+                          >
+                            <ICON_HELPER.CLOSE_ICON />
+                          </button>
+                        </div>
+                        <div className="p-4">
+                          <Mail packageName={destination.name} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex flex-col lg:flex-row gap-4 mt-3">
                     {details.map((detail, index) => (
