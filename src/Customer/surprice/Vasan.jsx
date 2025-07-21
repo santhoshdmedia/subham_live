@@ -129,6 +129,8 @@ const Vasan = () => {
   const [showPackageNav, setShowPackageNav] = useState(true);
   const [influencer, setInfluencer] = useState(false);
   const [travelPackages, setTravelPackages] = useState([]);
+const [touchStartY, setTouchStartY] = useState(0);
+const [touchEndY, setTouchEndY] = useState(0);
   const fetchPackages = async () => {
     try {
       const response = await axios.get(
@@ -159,6 +161,25 @@ const Vasan = () => {
       setScrollPosition(scrollLeft);
     }
   };
+  // Add these touch handlers
+const handleTouchStart = (e) => {
+  setTouchStartY(e.touches[0].clientY);
+  e.preventDefault(); // Prevent default touch behavior
+};
+const handleTouchMove = (e) => {
+  setTouchEndY(e.touches[0].clientY);
+  e.preventDefault();
+};
+
+const handleTouchEnd = () => {
+  if (touchStartY - touchEndY > 50) {
+    // Swipe up - next slide
+    handleSetActive(Math.min(activeIndex + 1, images.length - 1));
+  } else if (touchEndY - touchStartY > 50) {
+    // Swipe down - previous slide
+    handleSetActive(Math.max(activeIndex - 1, 0));
+  }
+};
 
   // Check if we can scroll left or right
   const canScrollLeft = scrollPosition > 0;
@@ -219,8 +240,12 @@ const handleSetActive = (index) => {
 };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black">
-      <div className=" md:block fixed top-[1.5rem] right-[-2rem] md:right-[8rem] lg:top-[2.2rem] lg:right-[8rem] w-[200px] h-[80%] !z-20 flex flex-col items-center overflow-hidden">
+    <div ref={containerRef} onWheel={handleWheel}   onTouchStart={handleTouchStart}
+  onTouchMove={handleTouchMove}
+  onTouchEnd={handleTouchEnd}
+  className="h-full w-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
+  style={{ touchAction: 'pan-y' }} >
+      <div className=" md:block fixed top-[1.2rem] right-[-1rem] md:right-[8rem] lg:top-[2rem] lg:right-[10rem] w-[150px] h-[80%] !z-20 flex flex-col items-center ">
         {/* Profile container with glow effect */}
         <div className="relative mt-12 mb-6 group">
           <div className="absolute w-[110px] h-[110px] lg:w-[170px] lg:h-[170px] rounded-full z-1 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 group-hover:bg-white/40 transition-all duration-500"></div>
@@ -231,7 +256,7 @@ const handleSetActive = (index) => {
         </div>
       </div>
       {influencer ? (
-        <div className="absolute lg:top-[250px] top-[320px]  right-12 lg:right-[120px] z-[99] lg:w-[250px] w-[300px] h-[140px] lg:h-[300px] rounded-2xl overflow-hidden bg-slate-50">
+        <div className="absolute lg:top-[250px] top-[330px]  right-12 lg:right-[120px] z-[99] lg:w-[250px] w-[300px] h-[130px] lg:h-[300px] rounded-2xl overflow-hidden bg-slate-50">
           <Swiper
             spaceBetween={30}
             centeredSlides={true}
@@ -405,21 +430,37 @@ const handleSetActive = (index) => {
         </div>
       </div>
 
-      {/* Image Navigation Dots */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-10 flex flex-col space-y-3 md:space-y-4">
+     {/* Image Navigation Dots */}
+<div 
+  className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4 md:space-y-3"
+  style={{ pointerEvents: 'auto' }} // Ensure touch events work
+>
   {images.map((_, i) => (
     <button
       key={i}
-      onClick={() => handleSetActive(i)}
-      onTouchStart={() => handleSetActive(i)} // Add touch event
-      className={`w-4 h-4 md:w-3 md:h-3 rounded-full transition-all ${
+      onClick={(e) => {
+        e.stopPropagation();
+        handleSetActive(i);
+      }}
+      onTouchStart={(e) => {
+        e.stopPropagation();
+        handleSetActive(i);
+      }}
+      className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all flex items-center justify-center ${
         i === activeIndex
           ? "bg-white scale-125 md:scale-110"
           : "bg-white/30 hover:bg-white/50"
       }`}
       aria-label={`Go to slide ${i + 1}`}
-      style={{ touchAction: 'manipulation' }} // Improve touch responsiveness
-    />
+      style={{
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent'
+      }}
+    >
+      {i === activeIndex && (
+        <span className="w-1 h-1 md:w-1.5 md:h-1.5 bg-[#df7401] rounded-full"></span>
+      )}
+    </button>
   ))}
 </div>
     </div>
