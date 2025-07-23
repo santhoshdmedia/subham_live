@@ -26,7 +26,7 @@ const Enquiry = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5058/api/auth/inquiries/${id}/status`, { status: newStatus });
+      await axios.patch(`https://subham-backend-2.onrender.com/api/auth/inquiries/${id}/status`, { status: newStatus });
       setInquiries(inquiries.map(inquiry => 
         inquiry._id === id ? { ...inquiry, status: newStatus } : inquiry
       ));
